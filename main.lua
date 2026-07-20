@@ -42,6 +42,11 @@ function Library.CreateLib(Title, ThemeName)
 	local Window = {}
 	local ThemeData = GetTheme()
 
+    local Existing = PlayerGui:FindFirstChild(CurrentName)
+    if Existing then
+        Existing:Destroy()
+    end
+
 	local ScreenGui = Instance.new("ScreenGui")
 	ScreenGui.Name = CurrentName
 	ScreenGui.ResetOnSpawn = false
@@ -57,6 +62,7 @@ function Library.CreateLib(Title, ThemeName)
 	MainFrame.BackgroundColor3 = ThemeData.MainFrame
 
 	MainFrame.BorderSizePixel = 0
+    MainFrame.ClipsDescendants = true
 
 	local Corner = Instance.new("UICorner")
 	Corner.CornerRadius = UDim.new(0,15)
@@ -70,10 +76,6 @@ function Library.CreateLib(Title, ThemeName)
     TabHolder.Size = UDim2.new(0,175,1,-50)
 	TabHolder.BackgroundColor3 = ThemeData.TabFrame
 	TabHolder.BorderSizePixel = 0
-    
-    local TabCorner = Instance.new("UICorner")
-    TabCorner.CornerRadius = UDim.new(0,15)
-    TabCorner.Parent = TabHolder
 
     local TabCover = Instance.new("Frame")
     TabCover.Parent = TabHolder
@@ -98,23 +100,26 @@ function Library.CreateLib(Title, ThemeName)
 	TopBar.BackgroundColor3 = ThemeData.TopFrame
 	TopBar.Active = true
     TopBar.BorderSizePixel = 0
+    TopBar.ClipsDescendants = true
 
     local Padding = Instance.new("UIPadding")
     Padding.Parent = TabHolder
     Padding.PaddingTop = UDim.new(0,12)
+    Padding.PaddingLeft = UDim.new(0,10)
+    Padding.PaddingRight = UDim.new(0,10)
 
-    	local Exit = Instance.new("TextButton")
-        Exit.Parent = TopBar
-        Exit.Size = UDim2.fromOffset(50,50)
-        Exit.Position = UDim2.new(1,-50,0,0)
-        Exit.BackgroundTransparency = 1
+    local Exit = Instance.new("TextButton")
+    Exit.Parent = TopBar
+    Exit.Size = UDim2.fromOffset(50,50)
+    Exit.Position = UDim2.new(1,-50,0,0)
+    Exit.BackgroundTransparency = 0
 
-        Exit.Text = "✕"
-        Exit.Font = CurrentFont
-        Exit.TextSize = 24
+    Exit.Text = "✕"
+    Exit.Font = CurrentFont
+    Exit.TextSize = 24
 
-        Exit.AutoButtonColor = false
-        Exit.TextColor3 = Color3.new(1,1,1)
+    Exit.AutoButtonColor = false
+    Exit.TextColor3 = Color3.new(1,1,1)
 
 	Exit.MouseButton1Click:Connect(function()
 		ScreenGui:Destroy()
@@ -178,7 +183,7 @@ function Library.CreateLib(Title, ThemeName)
 		local Button = Instance.new("TextButton")
 		Button.Name = TabName
 		Button.Parent = TabHolder
-		Button.Size = UDim2.new(1,-20,0,36)
+		Button.Size = UDim2.new(1,0,0,36)
 
 		Button.BackgroundColor3 = ThemeData.TabButton
         Button.AutoButtonColor = false
