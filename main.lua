@@ -9,15 +9,23 @@ repeat task.wait() until Players.LocalPlayer
 local PlayerGui = Players.LocalPlayer:WaitForChild("PlayerGui")
 
 
+local CurrentName = "MoonLib"
+local CurrentTheme = "Purple"
+local CurrentFont = Enum.Font.GothamBold
+
+
+
 local function GetTheme()
 
-	return ({
+	local Themes = {
+
 		Purple = {
 			MainFrame = Color3.fromRGB(40,28,49),
 			TopFrame = Color3.fromRGB(30,20,40),
 			TabFrame = Color3.fromRGB(30,20,40),
 			TabButton = Color3.fromRGB(55,35,70)
 		},
+
 
 		Blue = {
 			MainFrame = Color3.fromRGB(35,50,85),
@@ -26,6 +34,7 @@ local function GetTheme()
 			TabButton = Color3.fromRGB(40,65,120)
 		},
 
+
 		Green = {
 			MainFrame = Color3.fromRGB(35,65,35),
 			TopFrame = Color3.fromRGB(25,50,25),
@@ -33,33 +42,34 @@ local function GetTheme()
 			TabButton = Color3.fromRGB(40,90,40)
 		}
 
-	})[Theme] or {
-
-		MainFrame = Color3.fromRGB(45,45,45),
-		TopFrame = Color3.fromRGB(35,35,35),
-		TabFrame = Color3.fromRGB(35,35,35),
-		TabButton = Color3.fromRGB(60,60,60)
-
 	}
+
+
+	return Themes[CurrentTheme] or Themes.Purple
 
 end
 
 
 
+
+
 function Library.CreateLib(Title, ThemeName)
 
-	Name = Title
-	Theme = ThemeName
+
+	CurrentName = Title or "MoonLib"
+	CurrentTheme = ThemeName or "Purple"
+
 
 
 	local Window = {}
+
 
 	local ThemeData = GetTheme()
 
 
 
 	local ScreenGui = Instance.new("ScreenGui")
-	ScreenGui.Name = Name
+	ScreenGui.Name = CurrentName
 	ScreenGui.ResetOnSpawn = false
 	ScreenGui.Parent = PlayerGui
 
@@ -84,51 +94,82 @@ function Library.CreateLib(Title, ThemeName)
 
 
 
+
+
+	-- TAB HOLDER
+
 	local TabHolder = Instance.new("Frame")
+
 	TabHolder.Name = "TabHolder"
 	TabHolder.Parent = MainFrame
 
 	TabHolder.Size = UDim2.fromOffset(175,400)
 
 	TabHolder.BackgroundColor3 = ThemeData.TabFrame
+
 	TabHolder.BorderSizePixel = 0
 
 
 
 	local Layout = Instance.new("UIListLayout")
+
 	Layout.Parent = TabHolder
 
 	Layout.Padding = UDim.new(0,8)
+
 	Layout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 
 
 
+
+
+
+	-- TOP BAR
+
+
 	local TopBar = Instance.new("Frame")
+
 	TopBar.Name = "TopBar"
+
 	TopBar.Parent = MainFrame
 
 	TopBar.Size = UDim2.new(1,0,0,50)
+
 	TopBar.BackgroundColor3 = ThemeData.TopFrame
+
 	TopBar.Active = true
 
 
 
+
+
 	local TitleLabel = Instance.new("TextLabel")
+
 	TitleLabel.Parent = TopBar
 
 	TitleLabel.BackgroundTransparency = 1
+
 	TitleLabel.Position = UDim2.fromOffset(15,0)
+
 	TitleLabel.Size = UDim2.new(1,-70,1,0)
 
-	TitleLabel.Text = Name
-	TitleLabel.Font = Font
+	TitleLabel.Text = CurrentName
+
+	TitleLabel.Font = CurrentFont
+
 	TitleLabel.TextSize = 22
+
 	TitleLabel.TextColor3 = Color3.new(1,1,1)
+
 	TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
 
 
 
-	-- EXIT BUTTON
+
+
+
+	-- EXIT
+
 
 	local Exit = Instance.new("TextButton")
 
@@ -142,7 +183,7 @@ function Library.CreateLib(Title, ThemeName)
 
 	Exit.Text = "✕"
 
-	Exit.Font = Font
+	Exit.Font = CurrentFont
 
 	Exit.TextSize = 24
 
@@ -158,37 +199,11 @@ function Library.CreateLib(Title, ThemeName)
 
 
 
-	Exit.MouseEnter:Connect(function()
-
-		TweenService:Create(
-			Exit,
-			TweenInfo.new(.15),
-			{
-				TextColor3 = Color3.fromRGB(255,90,90)
-			}
-		):Play()
-
-	end)
 
 
 
-	Exit.MouseLeave:Connect(function()
+	-- TABS
 
-		TweenService:Create(
-			Exit,
-			TweenInfo.new(.15),
-			{
-				TextColor3 = Color3.new(1,1,1)
-			}
-		):Play()
-
-	end)
-
-
-
-
-
-	-- NEW TAB
 
 	function Window:NewTab(TabName)
 
@@ -203,18 +218,15 @@ function Library.CreateLib(Title, ThemeName)
 
 		Button.Parent = TabHolder
 
-
 		Button.Size = UDim2.fromOffset(150,40)
-
 
 		Button.BackgroundColor3 = ThemeData.TabButton
 
 		Button.BorderSizePixel = 0
 
-
 		Button.Text = TabName
 
-		Button.Font = Font
+		Button.Font = CurrentFont
 
 		Button.TextSize = 16
 
@@ -234,7 +246,6 @@ function Library.CreateLib(Title, ThemeName)
 
 		Button.MouseEnter:Connect(function()
 
-
 			TweenService:Create(
 				Button,
 				TweenInfo.new(.15),
@@ -243,13 +254,11 @@ function Library.CreateLib(Title, ThemeName)
 				}
 			):Play()
 
-
 		end)
 
 
 
 		Button.MouseLeave:Connect(function()
-
 
 			TweenService:Create(
 				Button,
@@ -258,7 +267,6 @@ function Library.CreateLib(Title, ThemeName)
 					Size = UDim2.fromOffset(150,40)
 				}
 			):Play()
-
 
 		end)
 
@@ -272,33 +280,28 @@ function Library.CreateLib(Title, ThemeName)
 
 
 
-	-- DRAG SYSTEM
+
+
+	-- DRAG
 
 
 	local Dragging = false
-
 	local DragStart
-
 	local StartPosition
 
 
 
 	TopBar.InputBegan:Connect(function(Input)
 
-
 		if Input.UserInputType == Enum.UserInputType.MouseButton1 then
 
-
 			Dragging = true
-
 
 			DragStart = Input.Position
 
 			StartPosition = MainFrame.Position
 
-
 		end
-
 
 	end)
 
@@ -307,49 +310,35 @@ function Library.CreateLib(Title, ThemeName)
 
 	UserInputService.InputChanged:Connect(function(Input)
 
-
 		if Dragging and Input.UserInputType == Enum.UserInputType.MouseMovement then
-
 
 			local Delta = Input.Position - DragStart
 
 
-
 			MainFrame.Position = UDim2.new(
-
 				StartPosition.X.Scale,
-
 				StartPosition.X.Offset + Delta.X,
 
-
 				StartPosition.Y.Scale,
-
 				StartPosition.Y.Offset + Delta.Y
-
 			)
-
 
 		end
 
-
 	end)
-
 
 
 
 	UserInputService.InputEnded:Connect(function(Input)
 
-
 		if Input.UserInputType == Enum.UserInputType.MouseButton1 then
-
 
 			Dragging = false
 
-
 		end
 
-
 	end)
+
 
 
 
@@ -361,13 +350,13 @@ end
 
 
 
--- OPTIONAL SETTINGS
+function Library:SetFont(Font)
 
-function Library:SetFont(Value)
-
-	Font = Value
+	CurrentFont = Font
 
 end
+
+
 
 
 
