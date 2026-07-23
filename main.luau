@@ -13,7 +13,6 @@ end;
 
 cloneref = cloneref or function(i) return i end;
 gethui = gethui or get_hidden_gui;
-getcustomasset = getcustomasset or getsynasset;
 getgenv = getgenv or getfenv;
 
 local LOAD_ENV = LPH_NO_VIRTUALIZE(function()
@@ -241,40 +240,7 @@ Moon.IsMosueOverOtherFrame = false;
 Moon.GlobalLogo = "rbxassetid://70396093908434"; --MENUIMAGE
 Moon.ImageColorMapping = "rbxassetid://4155801252";
 
-if getcustomasset then
-	local link = "https://github.com/4lpaca-pin/Moon/blob/main/assets/%s?raw=true";
-	local dir = 'NLAssets';
 
-	if not isfolder(dir) then
-		makefolder(dir);
-	end;
-
-	pcall(function()
-		if not isfile(dir..'/'..'logo.png') then
-			local byte = game:HttpGet(string.format(link,'logo.png'));
-
-			writefile(dir..'/'..'logo.png' , byte);
-			task.wait();
-		end;
-
-		if isfile(dir..'/'..'logo.png') then
-			Moon.GlobalLogo = getcustomasset(dir..'/'..'logo.png')
-		end;
-	end);
-
-	pcall(function()
-		if not isfile(dir..'/'..'saturation_value_gradient.png') then
-			local byte = game:HttpGet(string.format(link,'saturation_value_gradient.png'));
-
-			writefile(dir..'/'..'saturation_value_gradient.png' , byte);
-			task.wait();
-		end;
-
-		if isfile(dir..'/'..'saturation_value_gradient.png') then
-			Moon.ImageColorMapping = getcustomasset(dir..'/'..'saturation_value_gradient.png')
-		end;
-	end);
-end;
 
 function Moon:AddSignal(RBXSignal)
 	if Moon.UnloadEnabled then
