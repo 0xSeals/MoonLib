@@ -233,12 +233,12 @@ Moon.Scales = {
 Moon.IconColor = Color3.fromRGB(255, 255, 255);
 Moon.ScreenGui = GlobalWindow;
 Moon.Flags = {};
-Moon.AccentColor = Color3.fromRGB(78, 127, 252);
+Moon.AccentColor = Color3.fromRGB(127, 82, 250);
 Moon.MainColor = Color3.fromRGB(8, 8, 13);
 Moon.RegisiteryColor = {};
 Moon.NameRegisitry = {};
 Moon.IsMosueOverOtherFrame = false;
-Moon.GlobalLogo = "rbxassetid://120358385035996";
+Moon.GlobalLogo = "rbxassetid://70396093908434"; --MENUIMAGE
 Moon.ImageColorMapping = "rbxassetid://4155801252";
 
 if getcustomasset then
